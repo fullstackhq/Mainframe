@@ -1,1 +1,11 @@
+joins
+queries
+order by
+group by
+sqcodes
+indexing
+union
+distinct
 
+
+w3schools

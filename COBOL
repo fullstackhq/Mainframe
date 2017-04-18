@@ -1,1 +1,17 @@
+dbrm
+cmpilation
+inspect
+redefines
+renames
+suppress
+search
+search all
+static
+dynamic
+comp
+comp-2
+comp-3
+comp-5
+soc abends
+cursor
 

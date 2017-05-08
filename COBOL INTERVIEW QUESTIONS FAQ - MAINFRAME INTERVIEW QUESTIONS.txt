@@ -1,0 +1,325 @@
+COBOL INTERVIEW QUESTIONS FAQ - MAINFRAME INTERVIEW QUESTIONS 
+
+
+
+
+      DB2 Questions  |  HOME  |  JCL TUTORIALS  |  COBOL TUTORIALS
+
+
+
+
+MAINFRAME - COBOL INTERVIEW QUESTIONS 
+
+
+      MAINFRAME - COBOL INTERVIEW QUESTIONS 
+        Name the divisions in a COBOL program. 
+        IDENTIFICATION DIVISION, ENVIRONMENT DIVISION, DATA DIVISION, PROCEDURE 
+        DIVISION.
+        What are the different data types available in COBOL? 
+        Alpha-numeric (X), alphabetic (A) and numeric (9).
+        What does the INITIALIZE verb do? � 
+        Alphabetic, Alphanumeric fields & alphanumeric edited items are set to 
+        SPACES.
+        Numeric, Numeric edited items set to ZERO.
+        FILLER , OCCURS DEPENDING ON items left untouched.
+        What is 77 level used for ?
+      Elementary level item. Cannot be subdivisions of other items (cannot be 
+      qualified), nor can they be subdivided themselves.
+        What is 88 level used for ? 
+        For condition names.
+        What is level 66 used for ? 
+        For RENAMES clause.
+        What does the IS NUMERIC clause establish ? 
+        IS NUMERIC can be used on alphanumeric items, signed numeric & packed 
+        decimal items and usigned numeric & packed decimal items. IS NUMERIC 
+        returns TRUE if the item only consists of 0-9. However, if the item 
+        being tested is a signed item, then it may contain 0-9, + and - .
+        How do you define a table/array in COBOL? 
+        01 ARRAYS.
+        05 ARRAY1 PIC X(9) OCCURS 10 TIMES.
+        05 ARRAY2 PIC X(6) OCCURS 20 TIMES INDEXED BY WS-INDEX.
+        Can the OCCURS clause be at the 01 level? 
+        No.
+        What is the difference between index and subscript? 
+        Subscript refers to the array occurrence while index is the displacement 
+        (in no of bytes) from the beginning of the array. An index can only be 
+        modified using PERFORM, SEARCH & SET.
+        Need to have index for a table in order to use SEARCH, SEARCH ALL.
+        What is the difference between SEARCH and SEARCH ALL? 
+        SEARCH - is a serial search.
+        SEARCH ALL - is a binary search & the table must be sorted ( 
+        ASCENDING/DESCENDING KEY clause to be used & data loaded in this order) 
+        before using SEARCH ALL.
+        What should be the sorting order for SEARCH ALL? 
+        It can be either ASCENDING or DESCENDING. ASCENDING is default. If you 
+        want the search to be done on an array sorted in descending order, then 
+        while defining the array, you should give DESCENDING KEY clause. (You 
+        must load the table in the specified order).
+        What is binary search? 
+        Search on a sorted array. Compare the item to be searched with the item 
+        at the center. If it matches, fine else repeat the process with the left 
+        half or the right half depending on where the item lies.
+        My program has an array defined to have 10 items. Due to a bug, I find 
+        that even if the program access the 11th item in this array, the program 
+        does not abend. What is wrong with it? 
+        Must use compiler option SSRANGE if you want array bounds checking. 
+        Default is NOSSRANGE.
+        How do you sort in a COBOL program? Give sort file definition, sort 
+        statement syntax and meaning. 
+        Syntax:
+        SORT file-1 ON ASCENDING/DESCENDING KEY key....
+        USING file-2
+        GIVING file-3.
+        USING can be substituted by INPUT PROCEDURE IS para-1 THRU para-2
+        GIVING can be substituted by OUTPUT PROCEDURE IS para-1 THRU para-2.
+        file-1 is the sort workfile and must be described using SD entry in FILE 
+        SECTION.
+        file-2 is the input file for the SORT and must be described using an FD 
+        entry in FILE SECTION and SELECT clause in FILE CONTROL. 
+        file-3 is the outfile from the SORT and must be described using an FD 
+        entry in FILE SECTION and SELECT clause in FILE CONTROL.
+        file-1, file-2 & file-3 should not be opened explicitly.
+        INPUT PROCEDURE is executed before the sort and records must be RELEASEd 
+        to the sort work file from the input procedure.
+        OUTPUT PROCEDURE is executed after all records have been sorted. Records 
+        from the sort work file must be RETURNed one at a time to the output 
+        procedure.
+        How do you define a sort file in JCL that runs the COBOL program? 
+        Use the SORTWK01, SORTWK02,..... dd names in the step. Number of sort 
+        datasets depends on the volume of data being sorted, but a minimum of 3 
+        is required.
+        What are the two ways of doing sorting in a COBOL program? Give the 
+        formats. 
+        See question 16.
+        Give the format of USING and GIVING in SORT statement. What are the 
+        restrictions with it? 
+        See question 16. Restrictions - Cannot massage records, canot select 
+        records to be sorted.
+        What is the difference between performing a SECTION and a PARAGRAPH? 
+        Performing a SECTION will cause all the paragraphs that are part of the 
+        section, to be performed. 
+        Performing a PARAGRAPH will cause only that paragraph to be performed.
+        What is the use of EVALUATE statement? 
+        Evaluate is like a case statement and can be used to replace nested Ifs. 
+        The difference between EVALUATE and case is that no 'break' is required 
+        for EVALUATE i.e. control comes out of the EVALUATE as soon as one match 
+        is made.
+        What are the different forms of EVALUATE statement? 
+        EVALUATE EVALUATE SQLCODE ALSO FILE-STATUS
+        WHEN A=B AND C=D WHEN 100 ALSO '00'
+        imperative stmt imperative stmt 
+        WHEN (D+X)/Y = 4 WHEN -305 ALSO '32'
+        imperative stmt imperative stmt
+        WHEN OTHER WHEN OTHER
+        imperative stmt imperative stmt
+        END-EVALUATE END-EVALUATE
+        EVALUATE SQLCODE ALSO A=B EVALUATE SQLCODE ALSO TRUE
+        WHEN 100 ALSO TRUE WHEN 100 ALSO A=B
+        imperative stmt imperative stmt
+        WHEN -305 ALSO FALSE WHEN -305 ALSO (A/C=4)
+        imperative stmt imperative stmt
+        END-EVALUATE END-EVALUATE
+        How do you come out of an EVALUATE statement? 
+        After the execution of one of the when clauses, the control is 
+        automatically passed on to the next sentence after the EVALUATE 
+        statement. There is no need of any extra code.
+        In an EVALUATE statement, can I give a complex condition on a when 
+        clause? 
+        Yes.
+        What is a scope terminator? Give examples. 
+        Scope terminator is used to mark the end of a verb e.g. EVALUATE, 
+        END-EVALUATE; IF, END-IF.
+        How do you do in-line PERFORM? 
+        PERFORM ... ... 
+        END PERFORM
+        When would you use in-line perform?
+      When the body of the perform will not be used in other paragraphs. If the 
+      body of the perform is a generic type of code (used from various other 
+      places in the program), it would be better to put the code in a separate 
+      para and use PERFORM paraname rather than in-line perform.
+      27. What is the difference between CONTINUE & NEXT SENTENCE ?
+      CONTINUE is like a null statement (do nothing) , while NEXT SENTENCE 
+      transfers control to the next sentence (!!) (A sentence is terminated by a 
+      period)
+        What does EXIT do ? 
+        Does nothing ! If used, must be the only sentence within a paragraph.
+        Can I redefine an X(100) field with a field of X(200)? 
+        Yes. Redefines just causes both fields to start at the same location. 
+        For example:
+        01 WS-TOP PIC X(1)
+        01 WS-TOP-RED REDEFINES WS-TOP PIC X(2).
+        If you MOVE '12' to WS-TOP-RED, 
+        DISPLAY WS-TOP will show 1 while 
+        DISPLAY WS-TOP-RED will show 12. 
+        Can I redefine an X(200) field with a field of X(100) ? 
+        Yes.
+        What do you do to resolve SOC-7 error? 
+        Basically you need to correcting the offending data.
+        Many times the reason for SOC7 is an un-initialized numeric item. 
+        Examine that possibility first.
+        Many installations provide you a dump for run time abends ( it can be 
+        generated also by calling some subroutines or OS services thru assembly 
+        language). These dumps provide the offset of the last instruction at 
+        which the abend occurred. Examine the compilation output XREF listing to 
+        get the verb and the line number of the source code at this offset. Then 
+        you can look at the source code to find the bug. To get capture the 
+        runtime dumps, you will have to define some datasets (SYSABOUT etc ) in 
+        the JCL.
+        If none of these are helpful, use judgement and DISPLAY to localize the 
+        source of error.
+        Some installtion might have batch program debugging tools. Use them.
+        How is sign stored in Packed Decimal fields and Zoned Decimal fields? 
+        Packed Decimal fields: Sign is stored as a hex value in the last nibble 
+        (4 bits ) of the storage.
+        Zoned Decimal fields: As a default, sign is over punched with the 
+        numeric value stored in the last bite.
+        How is sign stored in a comp-3 field? 
+        It is stored in the last nibble. For example if your number is +100, it 
+        stores hex 0C in the last byte, hex 1C if your number is 101, hex 2C if 
+        your number is 102, hex 1D if the number is -101, hex 2D if the number 
+        is -102 etc... 
+        How is sign stored in a COMP field ? 
+        In the most significant bit. Bit is on if -ve, off if +ve.
+        What is the difference between COMP & COMP-3 ? 
+        COMP is a binary storage format while COMP-3 is packed decimal format.
+        What is COMP-1? COMP-2? 
+        COMP-1 - Single precision floating point. Uses 4 bytes.
+        COMP-2 - Double precision floating point. Uses 8 bytes.
+        How do you define a variable of COMP-1? COMP-2? 
+        No picture clause to be given. Example 01 WS-VAR USAGE COMP-1.
+        How many bytes does a S9(7) COMP-3 field occupy ? 
+        Will take 4 bytes. Sign is stored as hex value in the last nibble.
+        General formula is INT((n/2) + 1)), where n=7 in this example.
+        How many bytes does a S9(7) SIGN TRAILING SEPARATE field occupy ? 
+        Will occupy 8 bytes (one extra byte for sign).
+        How many bytes will a S9(8) COMP field occupy ? 
+        4 bytes. 
+        What is the maximum value that can be stored in S9(8) COMP? 
+        99999999
+        What is COMP SYNC? 
+        Causes the item to be aligned on natural boundaries. Can be SYNCHRONIZED 
+        LEFT or RIGHT.
+        For binary data items, the address resolution is faster if they are 
+        located at word boundaries in the memory. For example, on main frame the 
+        memory word size is 4 bytes. This means that each word will start from 
+        an address divisible by 4. If my first variable is x(3) and next 
+        one is s9(4) comp, then if you do not specify the SYNC clause, S9(4) 
+        COMP will start from byte 3 ( assuming that it starts from 0 ). If you 
+        specify SYNC, then the binary data item will start from address 4. You 
+        might see some wastage of memory, but the access to this 
+        computational field is faster. 
+        What is the maximum size of a 01 level item in COBOL I? in COBOL II? 
+        In COBOL II: 16777215
+        How do you reference the following file formats from COBOL programs: 
+        Fixed Block File - Use ORGANISATION IS SEQUENTIAL. Use RECORDING MODE IS 
+        F, BLOCK CONTAINS 0 .
+        Fixed Unblocked - Use ORGANISATION IS SEQUENTIAL. Use RECORDING MODE IS 
+        F, do not use BLOCK CONTAINS
+        Variable Block File - Use ORGANISATION IS SEQUENTIAL. Use RECORDING MODE 
+        IS V, BLOCK CONTAINS 0. Do not code the 4 bytes for record length in FD 
+        ie JCL rec length will be max rec length in pgm + 4
+        Variable Unblocked - Use ORGANISATION IS SEQUENTIAL. Use RECORDING MODE 
+        IS V, do not use BLOCK CONTAINS. Do not code 4 bytes for record length 
+        in FD ie JCL rec length will be max rec length in pgm + 4.
+        ESDS VSAM file - Use ORGANISATION IS SEQUENTIAL. 
+        KSDS VSAM file - Use ORGANISATION IS INDEXED, RECORD KEY IS, ALTERNATE 
+        RECORD KEY IS
+        RRDS File - Use ORGANISATION IS RELATIVE, RELATIVE KEY IS
+        Printer File - Use ORGANISATION IS SEQUENTIAL. Use RECORDING MODE IS F, 
+        BLOCK CONTAINS 0. (Use RECFM=FBA in JCL DCB).
+        What are different file OPEN modes available in COBOL? 
+        Open for INPUT, OUTPUT, I-O, EXTEND.
+        What is the mode in which you will OPEN a file for writing? 
+        OUTPUT, EXTEND
+        In the JCL, how do you define the files referred to in a subroutine ? 
+        Supply the DD cards just as you would for files referred to in the main 
+        program. 
+        Can you REWRITE a record in an ESDS file? Can you DELETE a record from 
+        it? 
+        Can rewrite(record length must be same), but not delete.
+        What is file status 92? 
+        Logic error. e.g., a file is opened for input and an attempt is made to 
+        write to it.
+        What is file status 39 ? 
+        Mismatch in LRECL or BLOCKSIZE or RECFM between your COBOL pgm & the JCL 
+        (or the dataset label). You will get file status 39 on an OPEN.
+        What is Static,Dynamic linking ? 
+        In static linking, the called subroutine is link-edited into the calling 
+        program , while in dynamic linking, the subroutine & the main program 
+        will exist as separate load modules. You choose static/dynamic linking 
+        by choosing either the DYNAM or NODYNAM link edit option. (Even if you 
+        choose NODYNAM, a CALL identifier (as opposed to a CALL literal), will 
+        translate to a DYNAMIC call).
+        A statically called subroutine will not be in its initial state the next 
+        time it is called unless you explicitly use INITIAL or you do a CANCEL. 
+        A dynamically called routine will always be in its initial state.
+        What is AMODE(24), AMODE(31), RMODE(24) and RMODE(ANY)? ( applicable to 
+        only 
+      MVS/ESA Enterprise Server).
+      These are compile/link edit options.
+      AMODE - Addressing mode. RMODE - Residency mode.
+      AMODE(24) - 24 bit addressing. AMODE(31) - 31 bit addressing. AMODE(ANY) - 
+      Either 24 bit or 31 bit addressing depending on RMODE.
+      RMODE(24) - Resides in virtual storage below 16 Meg line. Use this for 31 
+      bit programs that call 24 bit programs. (OS/VS Cobol pgms use 24 bit 
+      addresses only).
+      RMODE(ANY) - Can reside above or below 16 Meg line. 
+        What compiler option would you use for dynamic linking? 
+        DYNAM.
+        What is SSRANGE, NOSSRANGE ? 
+        These are compiler options w.r.t subscript out of range checking. 
+        NOSSRANGE is the default and if chosen, no run time error will be 
+        flagged if your index or subscript goes out of the permissible range.
+        How do you set a return code to the JCL from a COBOL program? 
+        Move a value to RETURN-CODE register. RETURN-CODE should not be declared 
+        in your program.
+        How can you submit a job from COBOL programs? 
+        Write JCL cards to a dataset with 
+        //xxxxxxx SYSOUT=(A,INTRDR) where 'A' is output class, and dataset 
+        should be opened for output in the program. Define a 80 byte record 
+        layout for the file.
+        What are the differences between OS VS COBOL and VS COBOL II? 
+        OS/VS Cobol pgms can only run in 24 bit addressing mode, VS Cobol II 
+        pgms can run either in 24 bit or 31 bit addressing modes.
+        Report writer is supported only in OS/VS Cobol.
+        USAGE IS POINTER is supported only in VS COBOL II.
+        Reference modification eg: WS-VAR(1:2) is supported only in VS COBOL II.
+        EVALUATE is supported only in VS COBOL II.
+        Scope terminators are supported only in VS COBOL II.
+        OS/VS Cobol follows ANSI 74 stds while VS COBOL II follows ANSI 85 stds.
+        Under CICS Calls between VS COBOL II programs are supported.
+        What are the steps you go through while creating a COBOL program 
+        executable? 
+         
+        DB2 precompiler (if embedded sql used), CICS translator (if CICS pgm), 
+        Cobol compiler, Link editor.
+        If DB2 program, create plan by binding the DBRMs.
+        Can you call an OS VS COBOL pgm from a VS COBOL II pgm ?
+      In non-CICS environment, it is possible. In CICS, this is not possible.
+        
+
+
+      MAINFRAME - COBOL INTERVIEW QUESTIONS 
+
+
+
+
+
+
+            DB2 INTERVIEW QUESTIONS  |  HOME  |  JCL TUTORIALS  |  COBOL 
+            TUTORIALS  |  COBOL Discussion Forum
+
+
+      HOME
+      Cobol interview questions
+
+
+               
+
+DB2 Interview Questions  |  COBOL Interview Questions  |  JCL interview 
+questions  |  JCL interview questions  |  vsam Interview Questions  |  cics 
+Interview Questions  
+|
+DB2 Interview Questions  |  COBOL Interview Questions  |  JCL interview 
+questions  |  JCL interview questions  |  vsam Interview Questions  |  cics 
+Interview Questions 

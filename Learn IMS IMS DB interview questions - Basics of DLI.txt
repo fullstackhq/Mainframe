@@ -1,0 +1,113 @@
+Learn IMS: IMS DB interview questions - Basics of DLIskip to main | skip to 
+sidebar 
+Learn IMS 
+A fun place to discover the world's fastest system
+Sunday, May 15, 2011
+IMS DB interview questions - Basics of DLI 
+Q1 : What do you mean by DBD and PSB?
+A1. DBD stands for database descriptor. It defines the structure of database. 
+Each database has one and only one DBD. PSB stands for Program specification 
+block. Each program that accesses the database has its own PSB. DBD and PSB are 
+created by the IMS DBA.
+
+Q2 : How is the batch DL/I program executed?
+A2 : In the JCL one needs to run the batch initialization module DFSRRC00 and 
+then pass the PSB as the parameter. This way the batch module is run.
+
+Q3 : How does COBOL module communicate with the DL/I database?
+A3 : It communicates by calling the subroutine CBLTDLI. Following is a sample 
+format.
+
+      CALL 'CBLTDLI' USING               DLI-FUNCTION
+                                                       PCB-MASK
+                                                       SEGMENT-IO-AREA
+                                                       SSA
+
+
+Q4: What are the different DL/I functions? Explain them.
+A4 : GU , GHU , GN , GHN , GNP , GHNP , ISRT , DLET , REPL , CHKP , XRST , PCB
+
+GU : Get unique - It lets DL/I to retrieve a particular segment. Like the COBOL 
+read.
+GN : Get next - It lets DL/I to retrieve the next segment. Like COBOL read next.
+GNP : Get next within parent. It lets retrieve segment occurences in sequence , 
+but only subordinate to an established parent segment. This does not have a 
+COBOL corresponding statement.
+
+GHU , GHN , GHNP : These are corresponding commands that are used with the 
+intent of updating the segments.
+
+ISRT : Insert a segment.
+DLET : Deelete a particular segment
+REPL : Replace a partcular segment - Like COBOL Rewrite.
+
+CHKP , XRST : IMS recovery functions
+PCB : Used in CICS programs.
+
+Q5 : Describe a PCB mask.
+A5 : Following is a sample PCB mask.
+
+      01  SAMPLE-PCB-MASK.
+                  05     IPCB-DBD-NAME                     PIC X(8).
+                  05     IPCB-SEGMENT LEVEL           PIC X(2).
+                  05     IPCB-STATUS-CODE               PIC X(2).
+                  05     IPCB-PROC-OPTIONS             PIC X(4).
+                  05     FILLER                                       PIC S9(5)  
+      COMP.
+                  05     IPCB-SEGMENT-NAME          PIC X(8).
+                  05     IPCB-KEY-LENGTH                PIC S9(5)         COMP.  
+ 
+                  05     IPCB-NUMB-SENS-SEGS       PIC S9(5)         COMP.
+                  05     IPCB-KEY                                 PIC X(11). 
+
+This is defined in the linkage section of the program.
+
+(i) IPCB-DBD-NAME : Its the name of the database the program is going after.
+
+(ii) IPCB-SEGMENT-LEVEL : Its the level of the segment that the system is 
+processing at any given time.
+
+(iii) IPCB-STATUS-CODE : Its the status code that's returned after the database 
+processing is done.
+
+(iv) IPCB-PROC-OPTIONS : Its the process options that indicates what processing 
+the program is authorized to do on the database.
+
+(v) FILLER : Its reserved for DL/I's use.
+
+(vi) IPCB-SEGMENT-NAME : After each call , DL/I stores the eight character name 
+of the segment just processed in this field.
+
+(vii) IPCB-KEY-LENGTH :  DL/I stores in this field the length of the 
+concatenated key of the lowest level segment processed during the previous call.
+
+(viii) IPCB-NUMB-SENS-SEGS : Its value is determined by PSBGEN. DL/I uses this 
+field to report the number of SENSEG macros subordinate to the PCB macro for 
+this data base.
+
+(ix) IPCB-KEY : Unlike all other fields, this one varies in length from one PCB 
+to another.Its as long as the longest possible concatenated key that can be used 
+with the program's view of the database.
+
+Q6 : What do the status code GB and GE mean?
+A6 : GB means that the end of database has been reached. GE means that the 
+segment is not found.
+
+Q7. What is the difference between un-qualified and qualified SSA?
+A7: Unqualified SSA is 9 bytes long. First 8 bytes has the segment name and 
+nineth byte is blank. Qualified SSA consists of the (i) Segment name , (ii) 
+Field name (iii) arithmetic operator (iv) Variable that will have the value 
+which would be compared to that of field name. Qualified SSA is used for getting 
+a particular segment occurence. 
+Posted by Dayanand Menashi at 7:20 PM  Labels: IMS DB interview questions 
+No comments:
+Post a Comment
+Home Subscribe to: Post Comments (Atom) Valuable Mainframe redbooks from IBM
+  JCL help
+  SOA solutions with IMS
+  Mainframe basics
+  XML in Z/OS
+  VSAM
+  DB2 stored procedures
+  COBOL programming
+  

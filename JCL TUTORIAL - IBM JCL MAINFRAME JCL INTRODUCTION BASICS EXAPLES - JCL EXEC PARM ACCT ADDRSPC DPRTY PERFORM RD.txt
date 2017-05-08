@@ -1,0 +1,117 @@
+JCL TUTORIAL - IBM JCL MAINFRAME JCL INTRODUCTION BASICS EXAPLES - JCL EXEC PARM ACCT ADDRSPC DPRTY PERFORM RDRAMESH 
+      KRISHNA REDDY  
+
+      Online Tutorials  | PREV | TOP | NEXT
+
+
+
+
+DRONA SERIES
+JCL STUDY MATERIAL
+
+
+
+CHAPTER - 4
+
+
+
+          
+
+EXEC statement
+
+
+
+
+
+
+
+
+
+
+
+EXEC statement is used to execute a program/procedure
+
+A maximum of 255 EXEC statement can code in an single job
+
+Syntax  - //stepname EXEC PGM=program-name,keyword parameters
+
+            Positional parameter  -  Program-name
+
+
+Keyword parameters for EXEC
+  
+            PARM  ACCT ADDRSPC DPRTY PERFORM RD
+
+PARM
+
+          PARAM parameter is used to pass information to program
+
+          Syntax  ->  PARM=value
+                 
+                      Value is a string can be 1 to 100 characters long.
+
+
+          
+         PASSING PARAMETER USING PARM PARAMETER
+
+         
+
+
+         PARM-INDICATOR will contain "RAMESH"
+
+         PARM-LENGTH contains length of string.             
+
+
+
+Remaining parameters , We wont use much     
+
+ACCT    - accounting information for that step
+
+ADDRSPC - used to indicate to the system that the job step is use either 
+          virtual or real storage
+ 
+DPRTY   - used to assign priority to the job step
+
+PERFORM - specifies the rate at which system resources used by job step
+
+RD      - restart definition is used to specify automatic restart of a job 
+          if it abends
+
+
+ Q. If there is a situation, where we need to code more than 255 steps in a JOB? 
+A. We need to split jcl into two jcls , at the end of the first jcl check the condition
+code and initiate the second jcl.			 			      
+			  
+
+
+	    
+
+NEXT CHAPTER TOPIC : PARAMETERS IN BOTH STATEMENTS (JOB and EXEC) 
+
+
+
+                                    
+
+
+
+
+
+
+
+
+
+Visit jcl books section in this site for good books
+
+
+
+
+
+
+
+
+      Home | Donations | Online Tutorials | Books | Entertainment | Contactme | 
+      privacy | sql tutorial | jcl interview questions | JCL Tutorial | JCL 
+      Tutorial - chapter1 | JCL Tutorial - chapter2 | JCL Tutorial - chapter3 | 
+      JCL Tutorial - chapter4 | JCL Tutorial - chapter5 | JCL Tutorial - 
+      chapter6 | JCL Tutorial - chapter7 | JCL Tutorial - chapter8 | JCL 
+      Tutorial - chapter9 | JCL Tutorial - chapter10 | JCL Tutorial - chapter11 

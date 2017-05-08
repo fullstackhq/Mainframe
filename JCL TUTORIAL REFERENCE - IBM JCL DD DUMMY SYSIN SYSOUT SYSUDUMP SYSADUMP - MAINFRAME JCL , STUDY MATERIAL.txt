@@ -1,0 +1,181 @@
+JCL TUTORIAL REFERENCE - IBM JCL DD DUMMY SYSIN SYSOUT SYSUDUMP SYSADUMP - MAINFRAME JCL , STUDY MATERIALRAMESH 
+      KRISHNA REDDY  
+
+      MAINFRAME Online Tutorials  | PREV | TOP | NEXT
+
+
+
+
+DRONA SERIES
+MAINFRAME JCL STUDY MATERIAL
+
+
+
+CHAPTER - 7
+
+
+
+          
+
+SPECIAL DD STATEMENTS
+
+
+
+
+
+
+
+
+
+
+
+1.  DUMMY 
+    DSN=NULLFILE
+
+2.  Concatenating Data sets
+
+3.  Passing data to cobol program  using -  SYSIN DD * 
+
+4.  SYSOUT
+
+5.  SYSUDUMP
+
+6.  SYSADUMP
+
+
+
+ 1. DUMMY or DSN=NULLFILE
+
+      Some times we need to testing of program, without using actual datasets. 
+
+      Then we can use DUMMY or DSN=NULLFILE.
+
+      If we use DUMMY, operating system simulates the presence of a file. When 
+      you reading Operating system sends end of file request to program.
+
+       Example JCL  -->   //MYJOB   JOB   (W345),'KRISHNA REDDY'
+                          //STEP1   EXEC  PGM=COBPROG
+                          //INFILE  DD    DUMMY
+
+
+
+2. CONCATENATING DATA SETS 
+
+      In JCL , we can concatenate different files by giving their name one after
+	  another. All data sets concated must be of the same type. For example, 
+	  partitioned data sets can be concatenated only with partitioned data sets.
+
+      Example JCL  -->   //MYJOB   JOB   (W345),'KRISHNA REDDY'
+                         //STEP1   EXEC  PGM=COBPROG
+                         //INFILE  DD    DSN=TEST.GLOB.FILE1
+                         //              DSN=TEST.GLOB.FILE2
+                         //              DSN=TEST.GLOB.FILE3
+ 
+      In program , we will read it as an single file. concatination of three 
+      files done by operating system.
+
+
+ Maximum of 255 sequential data sets can be concatenated together Maximum of 16 partitioned data sets can be concatenated together  
+                 
+   
+
+3. PASS DATA TO COBOL PROGRAM USING - SYSIN DD *                           
+
+       This is the one of the way of passing data to program. There are two 
+       syntax's to pass data.
+
+                  Syntax1  ->  //MYJOB   JOB   (W234),'RAMESH'
+                               //STEP1   EXEC  PGM=COBPROG
+                               //SYSIN   DD    *
+                                 
+                               /*
+
+                  Syntax2  ->  //MYJOB   JOB   (E345),'KRISHNA REDDY'
+                               //STEP1   EXEC  PGM=COBPROG
+                               //SYSIN   DD    DATA
+                                 
+                               /*
+
+
+          
+
+
+
+4. SYSOUT 
+
+       The SYSOUT parameter is used to send the output which is generated during 
+       job execution.
+
+				 Syntax      ->  //ddname  DD  SYSOUT=class
+
+                 EXAMPLE JCL ->  //MYJOB  JOB  (R456),'KRISHNA REDDY'
+                                 //STEP1  EXEC PGM=COBPROG
+                                 //INFILE DD   SYSOUT=A
+
+                 In this example, COBPROG is executed and all generated outputs 
+                 are directed to class ( here it is letter A) 
+
+
+ If * used with SYSOUT (SYSOUT=*) parameter, The class assigned to the MSGCLASS parameter will be used to SYSOUT.  
+
+                 
+
+5. SYSUDUMP   
+
+      SYSUDUMP is used to dump the content of various registers, variables and 
+      datasets acccessed at the time of abnormal termination, into a dataset.  
+      The dump is in hexadecimal.
+                  
+
+                  Syntax  -->   //SYSUDUMP  DD   .....
+
+                  EXAMPLE JCL -->   //MYJOB     JOB   (W345),'RAMESH'
+                                    //STEP1     EXEC  PGM=COBPROG
+                                    //SYSUDUMP  DD    DSN=TEST.PROD.LIB
+              
+
+
+
+6. SYSABEND
+
+      SYSABEND is used to dump the contents of various registers variables , 
+      datasets accessed and The nucleus at the time of abnormal termination.
+      The dump is in hexadecimal.
+
+                  Syntax  -->  //SYSABEND  DD  .....
+
+                  EXAMPLE JCL -->  //MYJOB    JOB   (WE345),'KRISHNA REDDY'
+                                   //STEP1    EXEC  PGM=COBPROG
+                                   
+
+
+	    
+
+NEXT CHAPTER TOPIC : INSTREAM and CATALOGED PROCEDURES 
+
+
+
+                                    
+
+
+
+
+
+
+
+
+
+Visit jcl books section in this site for good books
+
+
+
+
+
+
+
+      Home | Donations | Online Tutorials | Books | Entertainment | Contactme | 
+      privacy | sql tutorial | jcl interview questions | JCL Tutorial | JCL 
+      Tutorial - chapter1 | JCL Tutorial - chapter2 | JCL Tutorial - chapter3 | 
+      JCL Tutorial - chapter4 | JCL Tutorial - chapter5 | JCL Tutorial - 
+      chapter6 | JCL Tutorial - chapter7 | JCL Tutorial - chapter8 | JCL 
+      Tutorial - chapter9 | JCL Tutorial - chapter10 | JCL Tutorial - chapter11 

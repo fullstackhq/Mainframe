@@ -1,0 +1,194 @@
+Sample COBOL DB2 COMPILE JCL
+      Online Tutorials 
+      MainfameGuru - Discussion Forum 
+
+
+
+
+DRONA SERIES
+DB2
+COBOL DB2 COMPILE JCL 
+
+
+
+                
+
+//DB2COMP (XXX,XXX),'COMPILE JCL',                            
+//             CLASS=A,MSGCLASS=A,NOTIFY=&SYSUID                      
+//********************************************************************
+//* COMPILATION, LINK EDIT AND THE BIND STEP FOR A COBOL DB2 PROGRAM *
+//* WILL BE DONE BY SUBMITTING THIS JOB.                             *
+//* THE DB2 REGIONS AND CORRESPONDING PARAMETERS NEEDS TO BE CHANGED *
+//* WITH RESPECT TO THE PROGRAM                                      *
+//********************************************************************
+//*                 PRECOMPILE DB2 PROGRAM                           *
+//*--------------  LOCATION OF DBRM LIBRARY -------------------------*
+//********************************************************************
+//PC       EXEC PGM=DSNHPC,                                           
+//             PARM='HOST(COB2),APOST,SOURCE',                        
+//             REGION=4096K                                           
+//DBRMLIB  DD  DISP=SHR,                                              
+//             DSN=DEV.SURESH.DBRM(DB2PROG)    <------------------------ (1)                    
+//STEPLIB  DD  DISP=SHR,                                              
+//             DSN=SYSX.DB2.XXX.XXXXX  
+//********************************************************************  
+//*SYSIN -----------INPUT COBOL DB2 PROGRAM LOCATION-----------------*  
+//********************************************************************  
+//SYSIN    DD  DISP=SHR,                                                
+//             DSN=DEV.SURESH.SRC(DB2PROG)     <----------------------  (2)                      
+//SYSCIN   DD  DISP=(MOD,PASS),                                         
+//             DSN=&&TEMP,                                           
+//             SPACE=(800,(500,500)),                                   
+//             UNIT=SYSDA                                               
+//********************************************************************  
+//*                          DCLGEN MEMBER LOCATION                  *  
+//*SYSLIB-----------------INPUT SOURCE LIBRARY FOR SQL---------------*  
+//********************************************************************  
+//SYSLIB   DD  DISP=SHR,                                                
+//             DSN=DEV.SURESH.DCL               <---------------------- (3)                         
+//         DD  DISP=SHR,                                               
+//             DSN=DEV.SURESH.CPY                              
+//SYSPRINT DD  SYSOUT=T                                                
+//SYSTERM  DD  SYSOUT=T                                                
+//SYSUDUMP DD  SYSOUT=*                                                
+//SYSUT1   DD  SPACE=(800,(500,500),,,ROUND),                          
+//             UNIT=SYSDA                                              
+//SYSUT2   DD  SPACE=(800,(500,500),,,ROUND),                          
+//             UNIT=SYSDA                                              
+//*                                                                    
+//******************************************************************** 
+//*                         COMPILATION                              * 
+//******************************************************************** 
+//*                                                                    
+//COB      EXEC PGM=IGYCRCTL,                                          
+//             COND=(4,LT,PC),                                         
+//             PARM=('SIZE(4000K),BUFSIZE(32760),LIST,LIB,MAP,OBJECT', 
+//             'DATA(31),XREF,RENT'),                                  
+//             REGION=4M
+//STEPLIB  DD  DISP=SHR,                                               
+//             DSN=XXXX.XXXXXX                                       
+//SYSIN    DD  DISP=(OLD,DELETE),                                      
+//             DSN=&&TEMP                                           
+//SYSLIN   DD  DISP=(MOD,PASS),                                        
+//             DSN=&&LOADTMP,                                          
+//             SPACE=(800,(500,500)),                                  
+//             UNIT=SYSDA                                              
+//******************************************************************** 
+//*--------------SOURCE LIBRARIES FOR COBOL DB2 CODE (COPY LIBRARIES)* 
+//******************************************************************** 
+//SYSLIB   DD  DISP=SHR,                                               
+//             DSN=DEV.SURESH.DCL              <-----------------  (4)
+//         DD  DSN=DEV.SURESH.CPY,DISP=SHR
+//SYSPRINT DD  SYSOUT=*                                               
+//SYSUDUMP DD  SYSOUT=*                                               
+//SYSUT1   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//SYSUT2   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//SYSUT3   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//SYSUT4   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//SYSUT5   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//SYSUT6   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//SYSUT7   DD  SPACE=(800,(500,500),,,ROUND),                         
+//             UNIT=SYSDA                                             
+//*                                                                   
+//*                                                                     
+//********************************************************************  
+//*                         LINK EDIT                                *  
+//********************************************************************  
+//*                                                                     
+//LKED     EXEC PGM=IEWL,                                               
+//             COND=((4,LT,COB),(4,LT,PC)),                             
+//             PARM='XREF'                                              
+//SYSLIB   DD  DISP=SHR,                                                
+//             DSN=SXXX.SXXXXXXX                                        
+//         DD  DISP=SHR,                                                
+//             DSN=XXXX.DB2.XXX.XXXXLOAD                               
+//         DD  DISP=SHR,                                                
+//             DSN=SYS1.VSCLLIB                                         
+//SYSLIN   DD  DISP=(OLD,DELETE),                                       
+//             DSN=&&LOADTMP                                           
+//*        DD  DDNAME=SYSIN                                             
+//********************************************************************  
+//*----------------LOCATION OF LOAD LIBRARY--------------------------*  
+
+//SYSLMOD  DD  DISP=SHR,                                                
+//             DSN=DEV.SURESH.LOADLIB(DB2PROG)    <------------  (5)                   
+//SYSPRINT DD  SYSOUT=*                                                 
+//SYSUDUMP DD  SYSOUT=*                                                 
+//SYSUT1   DD  SPACE=(1024,(50,50)),                                    
+//             UNIT=SYSDA                                               
+//*                                                                     
+//********************************************************************  
+//*               BIND - BIND THE DB2 PACKAGE                        *  
+//********************************************************************  
+//BIND     EXEC PGM=IKJEFT01,                                           
+//             COND=(4,LT),                                             
+//             REGION=4096K                                             
+//STEPLIB  DD  DISP=SHR,                                                
+//             DSN=XXX4.DB2.XXXX.XXXXLOAD                               
+//DBRMLIB  DD  DISP=SHR,                                                
+//             DSN=DEV.SURESH.DBRM(DB2PROG)    <---------------  (6)        
+//SYSPRINT DD  SYSOUT=*                                                 
+//SYSTSPRT DD  SYSOUT=*                                                 
+//SYSUDUMP DD  SYSOUT=*                                                 
+//SYSTSIN  DD  *                                                        
+DSN SYSTEM (DEVDB	)                                                       
+BIND  MEMBER    (DB2PROG) -                                             
+      PACKAGE   (PACKG11) -                                            
+      LIBRARY   ('DEV.SURESH.DBRM') -         <---------------- (7)                        
+      ACTION    (REP) -                                                 
+      ISOLATION (CS) -                                                  
+      VALIDATE  (BIND)-                                                 
+      RELEASE   (COMMIT) -     
+      OWNER     (SURESH) -                                             
+      QUALIFIER (DEVQUALI)                                               
+END                                                                     
+/*                                                                      
+**************************** Bottom of Data ****************************
+
+
+(1)  -  When we precompiled, precompiler will create the DBRM, it will
+        be placed in the pds specified here.
+
+(2)  -  Location of COBOL-DB2 program
+
+(3)  -  Needs to speficiy DCLGEN member locations
+
+(4)  -  Needs to specify DCLGEN and COPYBOOK locations here
+
+(5)  -  Load module location, load module will be created here. this 
+        location needs to be given in run jcl.
+
+(5) & (6) - specify the location of DBRM, ( same location used in step1 ).
+
+                         
+               
+
+	    
+
+
+
+                                          
+
+
+
+
+
+
+
+
+
+
+            Home | Donations | Online Tutorials | Books | Entertainment | 
+            Contactme | privacy | sql tutorial  | db2 interview questions || 
+            Online ABEND Reference ||  JCL References ||  COBOL References ||  
+            VSAM References ||  Tutorials by Drona Series ||  SQL tutorial ||  
+            BOOKS  ||  DB2 INTERVIEW QUESTIONS ||  COBOL INTERVIEW QUESTIONS  || 
+             JCL INTERVIEW QUESTIONS ||  JCL2 INTERVIEW QUESTIONS ||  VSAM 
+            INTERVIEW QUESTIONS ||  CICS INTERVIEW QUESTIONS  ||  
+

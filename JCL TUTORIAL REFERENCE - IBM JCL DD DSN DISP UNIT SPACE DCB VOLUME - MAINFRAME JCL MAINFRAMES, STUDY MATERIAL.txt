@@ -1,0 +1,338 @@
+JCL TUTORIAL REFERENCE - IBM JCL DD DSN DISP UNIT SPACE DCB VOLUME - MAINFRAME JCL MAINFRAMES, STUDY MATERIALRAMESH 
+      KRISHNA REDDY  
+
+      Online Tutorials  | PREV | TOP | NEXT
+
+
+
+
+DRONA SERIES
+JCL STUDY MATERIAL
+
+
+
+CHAPTER - 6
+
+
+
+          
+
+DD STATEMENT
+
+The DD statement (Data Definition), is used to identify the source of input 
+and the placement of output information
+
+
+
+
+
+
+
+Syntax  ->  //ddname  DD  < positional / keyword parameters >
+
+            ddname must be unique in the job
+
+      
+            Positional parameters -  *
+                                     DATA
+                                     DUMMY
+                                     DYNAM
+
+            Keyword Parameters   -   DSN
+                                     DISP
+                                     UNIT
+                                     SPACE
+                                     DCB
+                                     VOLUME   
+
+DSN PARAMETER 
+
+    DSN parameter is used specify the data set name
+
+    Syntax  ->  DSN=dataset name
+
+    Example JCL ->  //MYJOB   JOB   (ER3),'RAMESH R' 
+                    //STEP1   EXEC  PGM=COBPROG
+                    //INFILE  DD    DSN=TEST.GLOB.MYLIB
+ 
+                    TEST.GLOB.MYLIB will be used in the COBPROG program.
+
+
+
+TEMPORARY DATA SETS
+  
+    Temporary data set is created during job and deleted at the end of the job.  
+
+    Temporary data set can be coded by using two ampersands followed by name.
+
+    Example JCL  --> //MYJOB   JOB   (E456),'RAMESH'
+                     //STEP1   EXEC  PGM=COBPROG
+                     //INFILE  DD    DSN=&&TEMP         
+
+    Here TEMP is an temporary dataset will be deleted upon job completion.
+
+
+
+
+DISP PARAMETER
+
+   The DISP parameter is used specify the disposition of dataset which is
+   coded on DSN parameter. 
+
+   Syntax   ->      
+
+                    
+
+         
+
+   Parameter on the DISP statement
+
+
+         Status                   Normal Disposition           Abnormal Disposition
+
+
+         NEW                      DELETE                       DELETE 
+         OLD                      CATLG                        CATLG  
+         MOD                      UNCATLG                      KEEP
+         SHR                      KEEP                         UNCATLG
+                                  PASS 
+
+        
+
+    STATUS  
+
+          NEW  -  Dataset will be created. (file should not exists)
+          OLD  -  Dataset should exists.
+          MOD  -  Dataset will be created If not exists.
+          SHR  -  Dataset can be used by other jobs also
+
+
+
+    NORMAL DISPOSITION   
+    (Happened upon sucessful execution of job step)
+
+          DELETE  -  Dataset should be deleted
+          CATLG   -  Dataset will be cataloged
+          UNCATLG -  Dataset will be removed from system catalogs
+          KEEP    -  Dataset will be retained (This parameter should 
+                     be used with permanent data sets)
+          PASS    -  Dataset is to be passed subsequent job step in 
+                     the same job
+
+
+
+    ABNORMAL DISPOSITION 
+    (Happened upon unsucessful execution of job step)
+
+          DELETE  -  Dataset should be deleted
+          CATLG   -  Dataset will be cataloged
+          UNCATLG -  Dataset will be removed from system catalogs
+          KEEP    -  Dataset is to be kept
+
+
+
+    EXAMPLE JCL -->   //MYJOB   JOB   (E674),'KRISHNA REDDY'
+                      //STEP1   EXEC  PGM=COBPROG
+                      //INFILE  DD    DSN=TEST.GLOB.TEMP,
+                      //              DISP=(NEW,CATLG,DELETE)
+
+
+    In this example , 
+		                
+          DISP=(NEW,CATLG,DELETE)
+
+          NEW    - TEST.GLOB.TEMP is not exists, it will be created
+
+          CATLG  - Upon successful execution of job step, data set 
+                    will be cataloged
+
+          DELETE - If job terminicated abnormally, dataset will be deleted
+        
+
+
+
+
+UNIT PARAMETER
+
+
+    In IBM Mainframe environment, All devices have an address assigned to 
+    them at the time they added to the sytem. Devices can be referenced 
+    using this addresses. UNIT parameter is used to specify thise address.
+
+    Syntax  ->   UNIT=device_address/device_type/device_group_name/TAPE
+
+        
+    EXAMPLE JCL -> //MYJOB  JOB   (R345),'KRISHNA REDDY'
+                   //STEP1  EXEC  PGM=COBPROG
+                   //INFILE DD    DSN=TEST.GLOB.TEST.LIB,
+                   //             UNIT=SYSDA
+
+    In above example, COBPROG is executed, and a file INFILE  which may 
+    reside on any of the devices  which are grouped under the symbolic name 
+    SYSDA will be accessed
+
+
+
+
+VOL PARAMETER
+
+
+    This parameter is used to identify the volume serial number on which 
+    dataset is reside. The VOL dataset is used with disk and tape datasets.
+
+
+    Syntax  ->   VOL= volumelabel/data set label  
+
+
+    Sub parameters used with VOL parameter
+
+        SER     -  Specification of serial number
+        REF     -  Referencing VOL specification from a prior step
+        PRIVATE -  Allowing access to volume by single user
+        RETAIN  -  Inhibiting dismounting of volume until end of job
+        SEQ     -  Specification of sequence in which volumes are to be mounted
+
+
+    EXAMPLE JCL -->  //MYJOB   JOB   (E454),'KRISHNA REDDY'
+                     //STEP1   EXEC  PGM=COBPROG
+                     //INFILE  DD    DSN=TEST.GLOB.TEMP,
+                     //              VOL=SER=(VOL1,VOL2,VOL3)
+
+    In this example the data set called DATA3 resides on 3 volumes whose 
+    serial numbers are VOL1,VOL2,VOL3. The Operating system will request 
+    that all volumes be mounted at the same time.
+
+
+
+
+
+
+
+
+
+
+
+
+
+SPACE PARAMETER
+
+     The SPACE parameter is used to allocate space for datasets.  
+     We can allocate space in Cylinders/Tracks/Blocks
+
+     Syntax  ->  SPACE=(CYL,(primary,secondary,directory),RLSE,CONTIG,MXIG,ROUND)
+
+                 Instead of CYL, We can use TRK or BLK
+
+
+     Meaning of Sub Parameter 
+        
+             TRK       -  Requesting space in track
+
+             CYL       -  Requesting space in cylinders
+
+             PRIMARY   -  Primary storage to be allocated at the time of 
+                          data set created
+  
+             SECONDARY -  Additional storage to be allocated , 
+			              If primary storage is not sufficient
+
+             DIRECTORY -  Space for recording of name and location of partitioned 
+                          data sets
+
+             RLSE      -  Request for release of space previously allocated unused 
+                          space after completion of job
+
+             CONTIG    -  Request for contiguous space
+                    
+             MXIG      -  Request for large aread of contiguous space
+
+             ROUND     -  Request for entire cylinder for storage of data set
+
+
+      EXAMPLE JCL  ->   //MYJOB   JOB   (W345),'KRISHNA REDDY'
+                         //STEP1   EXEC  PGM=COBPROG
+                         //INFILE  DD    DSN=TEST.GLOB.LIB
+                         //              UNIT=4560
+                         //              SPACE=(CYL,(30,4))
+
+      In this example, 30 cylinders are requested as primary space and 4 
+      additional cyliders as secondary space.
+
+
+
+ Upto 15 extends of secondary space ( in our example it is 4 ) will be alloted , If space is not sufficient.  
+
+    
+
+
+
+DCB PARAMETER 
+        
+    Records in dataset may contain FIXED length / VARIABLE length. 
+    The DCB (Data Control Block) parameter is used to specify record 
+    format,record length, block size etc..
+
+
+    Syntax  ->  //ddname  DD  DCB=< parameters >
+
+
+    Subparameters in DCB 
+
+           RECFM   -  Specification of record format   -  F/FB/V/VB/U
+           LRECL   -  Specification of record length     
+           BLKSIZE -  Specification of block size
+           BUFNO   -  Specification of buffers
+
+
+    EXAMPLE JCL  ->  //MYJCL   JOB   (E3445),'RAMESH'
+                     //STEP1   EXEC  PROG=COBPROG
+                     //INFILE  DD    DSN=TEST.GLOB.LIB
+                     //              UNIT=234,
+                     //              DSN=(LRECL=80,
+                     //                   RECFM=FB,
+                     //                   BLKSIZE=800,
+                     //                   BUFNO=30)
+
+
+    In this example, The DCB parameter specifies that this file is to 
+    have a logical record length of 80  bytes, it will have a fixed block 
+    record format, and the block will 800 (800 is multiple of 80). The 
+    BUFNO parameter is set to 30, indicating upto 30 buffers may be 
+    utilized in virtual storage for this data set.
+                       
+    Default buffers are 5,if you not specified any thing 
+
+
+
+ When you specified V for RECFM parameter, LRECL value is largest record in the file plus 4 bytes. These four bytes contain the actual length of each variable length record in the file  
+ 
+
+	    
+
+NEXT CHAPTER TOPIC : SPECIAL DD STATEMENTS 
+
+
+
+                                    
+
+
+
+
+
+
+
+
+
+Visit jcl books section in this site for good books
+
+
+
+
+
+
+      Home | Donations | Online Tutorials | Books | Entertainment | Contactme | 
+      privacy | sql tutorial | jcl interview questions | JCL Tutorial | JCL 
+      Tutorial - chapter1 | JCL Tutorial - chapter2 | JCL Tutorial - chapter3 | 
+      JCL Tutorial - chapter4 | JCL Tutorial - chapter5 | JCL Tutorial - 
+      chapter6 | JCL Tutorial - chapter7 | JCL Tutorial - chapter8 | JCL 
+      Tutorial - chapter9 | JCL Tutorial - chapter10 | JCL Tutorial - chapter11 

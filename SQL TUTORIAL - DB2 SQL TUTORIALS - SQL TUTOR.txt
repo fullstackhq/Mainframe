@@ -1,0 +1,126 @@
+SQL TUTORIAL - DB2 SQL TUTORIALS - SQL TUTORRAMESH KRISHNA REDDY  
+
+             
+                  HOME Interview questions SQL JCL Tutorial Sort tutorial DB2 
+                  COBOL Programming Tutorial 
+
+
+       
+                         
+
+                  SQL
+                   Introduction 
+                   DB2 SQL DDL 
+                   DB2 SQL DML 
+                   DB2 SQL DML Part II 
+                   DB2 SQL DML Part III *
+                   Discussion Forum 
+
+
+                  * can be found in e-book. Click here to download the e-book 
+
+
+            Click here to download the e-book    
+
+                              DB2 SQL INTRODUCTION
+
+
+
+
+
+
+                              SQL (structured query language) is used to 
+                              acccess, manipulate or control the access of 
+                              rantional database. Databases like DB2, ORACLE, 
+                              SQL SERVER 2000 support the SQL (Structured query 
+                              language). 
+
+                              In relational database data represented as tables. 
+                              Tables contains the data in rows and column. Rows 
+                              are called as records, columns called as fields. 
+
+
+
+                               
+
+
+
+
+                              PRIMARY KEY - PRIMARY KEY is one column or 
+                              combination columns. This primary key is to 
+                              identify the records uniquely in the table. 
+                              Applications/programs normally proides PRIMARY KEY 
+                              value to get the record values from the table. 
+                              PRIMARY KEY columns have the unique index (unqiue 
+                              indexes wont allow duplicate values) defined on 
+                              them, so that processing time of SQL will be very 
+                              less compare than the non-index columns.
+
+
+                              FOREIGN KEY - FOREIGN KEY is one or more columns 
+                              in a table that refers to the primary key of 
+                              another table. Through this key we can establish a 
+                              relation between two tables. If table B foreign 
+                              key refers table A's primary key, DB2 / ORACLE 
+                              wont allow to enter the records into table B if 
+                              the foreign key value in the input data is not 
+                              present in the table A's primary key list of 
+                              values.
+
+
+
+
+                              DB2 SQL (Structured query language) commands can 
+                              be classified into 3 main categories DDL, DML and 
+                              DCL.
+
+
+                              DDL ( Data Definition Language ) - These 
+                              statements usaully used by DBA's or Senior 
+                              Programmers to create table spaces, tables , 
+                              indexes etc...
+
+                              COMMANDS : 
+                              CREATE
+                              DROP
+                              ALTER
+
+
+                              DML (Data Manipulatoin Language ) - using these 
+                              statements we can select, insert, update and 
+                              delete the data in the database. 
+
+                              COMMANDS :
+                              SELECT, 
+                              INSERT, 
+                              UPDATE, 
+                              DELETE
+
+
+                              DCL (Data Control Language ) - Using these 
+                              statements DBA / user who has authority to grant 
+                              can grant accecss or revoke the authority of 
+                              accessing DB2 database.
+
+                              COMMANDS :
+                              GRANT
+                              REVOKE 
+
+
+
+
+
+
+
+                              SQL TUTORIAL / DB2 / DB2 DATABASE / MAINFRAME / 
+                              DB2 / SQL (Sequel) Index DATABASE / MAINFRAME / 
+                              DB2 / SQL DB2 DATABASE / 
+                                         
+                               
+
+
+
+
+       
+
+Drona Tutorials - DB2 SQL Tutorials 

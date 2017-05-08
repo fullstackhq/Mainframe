@@ -1,0 +1,381 @@
+JCL TUTORIAL REFERENCE - Generation Data Groups (GDG) DEFINE ALTER DELETE GDG SAMPLE EXAMPLERAMESH 
+      KRISHNA REDDY  
+
+      Online Tutorials  | PREV | TOP | NEXT
+
+
+
+
+DRONA SERIES
+JCL STUDY MATERIAL
+
+
+
+CHAPTER - 9
+
+
+
+          
+
+JCL Reference - Generation Data Groups (GDG)
+
+
+
+
+
+
+
+
+
+
+
+1. INTRODUCTION
+
+2. CREATION OF GDG
+
+3. USING GDG
+
+4. ALTERING GDG DEFINITION
+
+5. DELETING GDG 
+
+6. IMPORTANT PRACTICAL QUESTIONS
+
+
+
+
+1. INTRODUCTION
+
+
+   Generation Data Groups or GDGs are a group of data sets which 
+   are related to each other chronologically and functionally. 
+   These related Data Sets share a unique Data Set Name. 
+
+
+   Every GDG data set has a Generation number and Version number assigned 
+   to each data set. 
+
+
+   EXAMPLE --   'MYLIB.LIB.TEST.G0001V00'
+                'MYLIB.LIB.TEST.G0002V00'
+                'MYLIB.LIB.TEST.G0003V00'     <-- Current Version 
+
+
+                Generation Number ->  GaaaaVnn
+                                      aaaa is between 0000 to 9999 
+                                      nn   is between 00   to 99
+
+
+                In JCL, we refer current version with 0  ( Ex.  MYLIB.LIB.TEST(0)  )
+                new version going to create with  +1     ( Ex.  MYLIB.LIB.TEST(+1) )
+
+                older versions , refer with -1 -2 -3 etc....
+                                      ( Ex.  MYLIB.LIB.TEST(-1) )   <- OLDER VERSION 
+
+
+
+                 
+
+               
+                          
+
+
+   Example for where we can use this GDGs.
+   
+         Usually, In production environment, for every month we need 
+         to run jobs to create reports for that month.
+
+
+         Let us suppose for January, We can code it  MYLIB.LIB.TEST.JAN
+                            for FEB, We can code it  MYLIB.LIB.TEST.FEB
+                            for MAR, We can code it  MYLIB.LIB.TEST.MAR
+                           
+								 
+         So , Every month we need change dataset name in JCL, before 
+         submitting the job. Whenever we enterred into another year, 
+         We need to delete old years data sets.
+
+         We need to do above task carefully, If we use GDG, It will take 
+		 care following things
+
+         - It will maintain all generation of data sets
+         - It will delete/uncatalog older generation
+         - Very easily, we can refer current and older versions of data sets 
+         - No need of change the JCL every time when we submit
+
+
+
+
+
+
+2. CREATION OF GDG
+
+     Before using GDG , We need to create GDG index and model.  
+     IDCAMS (the 'AMS' stands for Access Method Services), utility 
+     is used to create GDG index. 
+
+
+
+     Example JCL for creating GDG index
+
+           //MYJOB   JOB  (W234),'RAMESH'
+           //STEP1   EXEC PGM=IDCAMS          
+           //SYSIN   DD   *
+             DEFINE GDG(NAME(MYLIB.LIB.TEST)    -
+                        LIMIT(10)               -
+                        NOEMPTY                 -
+                        SCRATCH)
+           /*
+           //
+            ( copyright - www.mainframegurukul.com )
+
+
+           In this example, IDCAMS utility is used to create an index 
+           for a GDG called  MYLIB.LIB.TEST. The number of generations 
+           that can exist in this GDG is limited to ten. NOEMPTY parameter 
+           is used to specify , Once the limit is reached, the system is 
+           instructed to uncatalog the oldest generation data set within the 
+           GDG. SCRATCH parameter is used to specify to physically delete 
+           the data set which was uncataloged.
+
+
+
+     PARAMETERS WE CAN PASS TO IDCAMS
+
+      NAME              -  This parameter is used to specify the name of the 
+                           data set that is to be created.
+
+      LIMIT             -  This parameter is used to specify the the total number 
+                           of generations that the GDG may contain
+
+      EMPTY/NOEMPTY     -  These two parameters are mutually exclusive. EMPTY 
+                           specifies that all existing generations of the GDG 
+                           are to be uncataloged whever the generations of GDG 
+                           reached the maximum limit NOEMPTY specifies that only 
+                           the oldest generation of the GDG is to be uncataloged 
+                           if the limit is reached
+
+      SCRATCH/NOSCRATCH -  These two parameters are mutually exclusive. SCRATCH 
+                           parameter specifies that whenever entry of the GDG is 
+                           removed from the index, it should be deleted physically 
+                           and uncataloged.  NOSCRATCH  parameter  specifies  that 
+                           whenever entry of the GDG is removed from the index, it 
+                           should be uncataloged, not physically deleted
+
+
+
+ SCRATCH and NOEMPTY are default parameters  
+             
+
+
+
+     CREATING MODEL
+
+       Once the index has  been  created,  a  model data set must be created. 
+       This  model data set contains specifications for the DCB subparameters 
+       for all data sets that will belong to that GDG. Programmer can override 
+       this default values if he want.
+
+
+       EXAMPLE JCL 
+
+       //MYJOB  JOB   (W983),'KRISHNA REDDY'
+       //STEP1  EXEC   PGM=IDCAMS
+       //SYSIN  DD     *
+         DEFINE GDG(                         -
+                     NAME(MYLIB.LIB.TEST)    -
+                     LIMIT(10)               -
+                     NOEMPTY                 -
+                     SCRATCH)
+       //STEP2  EXEC PGM=IEFBR14
+       //MODEL1 DD   DSN=MYLIB.LIB.TEST,
+       //            DISP=(NEW,KEEP,DELETE),
+       //            UNIT=SYSDA,
+       //            SPACE(TRK,0),
+       //            DCB=(LRECL=80,RECFM=FB,BLKSIZE=800)
+       //
+      ( copyright - www.mainframegurukul.com )
+
+       Using IEFBR14, we have created the model, Now GDG is ready to use, In 
+       next section you will learn how we will  use this created GDG.
+
+           
+
+ 
+3. USING GDG
+
+     To use created GDG in our JCL, we need to use name 
+     (with +1 for new generation) which we used in DEFINE 
+     GDG command. (i.e. MYLIB.LIB.TEST)
+
+     EXAMPLE JCL        
+	   
+     //MYJOB   JOB  (SD345),'KRISHNA REDDY'
+     //STEP1   EXEC PGM=COBPROG
+     //INFILE  DD   DSN=MYLIB.LIB.TEST(+1),
+     //             DISP=(NEW,CATLG,DELETE),
+     //             UNIT=SYSDA,
+     //             SPACE=(TRK,(20,10),RLSE),
+     //             DCB=(MODEL.DCB,RECFM=FB,
+     //             LRECL=80,
+     //             BLKSIZE=800)
+     //
+     ( copyright - www.mainframegurukul.com )
+
+     The program COBPROG is executed. A new generation data set is 
+     created via the statement
+
+         //INFILE  DD  DSN=MYLIB.LIB.TEST(+1)
+
+     Since we used (+1) with GDG name, it creates a new generation 
+     data set. 
+
+     The DISP parameter must be set to CATLG for all new generation 
+     data sets , DISP=(NEW,CATLG,DELETE)
+
+
+     We used MODEL.DCB in DCB parameter to instruct system to use 
+     subparameters specified in model GDG.
+
+
+ The DSN and UNIT parameters must be coded for all new generation data sets   
+
+          
+
+
+
+ 
+4. ALTERING GDG DEFINITION
+
+
+     Some times there are situtations where we need to change the 
+     attributes of GDG. These types of tasks can be performed using 
+     ALTER command. We will use IDCAMS utitlity to alter GDG attributes.
+
+          
+     In last section, I have create MYLIB.LIB.TEST GDG with NOEMPTY SCRATCH 
+     subparameters, now I want to change them to EMPTY NOSCRATCH respectively. 
+     Here is the JCL that will do this:
+
+     //MYJOB    JOB  (WE345),'KRISHNA'
+     //STEP1    EXEC PGM=IDCAMS
+     //SYSPRINT DD   SYSOUT=A
+     //SYSIN    DD   *
+         ALTER MYLIB.LIB.TEST  EMPTY NOSCRATCH
+     /*
+     //
+     ( copyright www.mainframegurukul.com )
+
+     In this example, the ALTER statement is used to modify the features of 
+     the GDG called MYLIB.LIB.TEST. Any generations that may exist for that 
+     GDG will now contain the modified features as well. Any new generations 
+     that are created for this GDG will now be created based on these new 
+     features.
+
+
+
+          
+
+ 
+5. DELETING GDG    
+
+           
+     We can delete an generation of GDG  with IEFBR14, Here is the 
+     JCL to do that
+
+     //MYJOB  JOB  (ER456),'RAMESH'
+     //STEP1  EXEC PGM=IEFBR14
+     //DEL1   DD   DSN=MYLIB.LIB.TEST(0)    <-- Current Version
+     //            DISP=(OLD,DELETE,DELETE)
+     //
+     ( copy right www.mainframegurukul.com )
+
+     In this example JCL, the program IEFBR14 is executed. The current 
+     generation of MYLIB.LIB.TEST is deleted.
+
+      
+     To delete GDG index/generations , We need to use DELETE command in 
+     IDCAMS utility. There are two sub parameters we can use with DELETE 
+     command.  
+
+	 
+     They are PURGE and  FORCE
+
+
+     PURGE sub parameter is used in conjunction with DELETE statement to 
+     delete the GDG index, even if its retention period has not expired.  
+
+     FORCE parameter can be coded on the DELETE statement to delete the 
+     GDG index, the model, and all related generation data sets, if they 
+     exist.
+
+ 
+     EXAMPLE JCL for FORCE 
+
+     //MYJOB  JOB  (W234),'KRISHNA'
+     //STEP1  EXEC PGM=IDCAMS
+     //SYSIN  DD   *
+       DELETE(MYLIB.LIB.TEST) GDG FORCE
+     /*
+     (copyright www.mainframegurukul.com )
+
+     MYLIB.LIB.TEST GDG index, the model  and all related generation data 
+     sets will be deleted upon successful execution of this job step.
+
+
+  Maximum of 255 data sets exist within one GDG  
+ 
+
+        
+
+
+
+ 
+6. IMPORTANT PRACTICAL QUESTIONS
+
+Q. In my JCL, In step1  I will going to create a new generation data 
+   set for that i gave gdgname(+1). In step2 I want to use same data 
+   set created by previous step? what number i should give to refer that 
+   data set (i.e 0 or +1 or +2 )?   (STEP1 EXECUTED SUCCESSFULLY)
+
+A. +1  
+
+Q. Why?
+
+A. Even step1 executed successfully, It is not become the current generation 
+   of GDG. At the end of the job only it will become the current version of GDG. 
+   So within the job we need to refer it as new generation only, even that step 
+   completed sucessfully.               
+
+
+
+
+NEXT CHAPTER TOPIC :  Control Job Processing (IF THEN ELSE) in JCL
+
+ 
+
+	    
+                                                         
+
+
+
+
+
+
+
+
+
+Visit jcl books section in this site for good books
+
+
+
+
+
+
+
+      Home | Donations | Online Tutorials | Books | Entertainment | Contactme | 
+      privacy | sql tutorial | jcl interview questions | JCL Tutorial | JCL 
+      Tutorial - chapter1 | JCL Tutorial - chapter2 | JCL Tutorial - chapter3 | 
+      JCL Tutorial - chapter4 | JCL Tutorial - chapter5 | JCL Tutorial - 
+      chapter6 | JCL Tutorial - chapter7 | JCL Tutorial - chapter8 | JCL 
+      Tutorial - chapter9 | JCL Tutorial - chapter10 | JCL Tutorial - chapter11 

@@ -1,0 +1,122 @@
+DB2 BIND PRECOMPILE Process - DB2 SQL CODES -805 -818
+      Online Tutorials 
+      MainfameGuru - Discussion Forum 
+
+
+
+
+DRONA SERIES
+DB2
+DB2 Precompile-Compilation-Bind Process
+
+
+
+                
+
+INTRODUCTION
+
+
+Static SQL - COBOL PRE-compile process
+
+
+For COBOL-Static SQL program, program needs to be precompiled before doing actual 
+compilation of that program.
+
+
+Following are the 4 steps to compile a COBOL-DB2 program
+
+
+
+
+
+
+
+STEP 1 -  DB2 PRECOMPILE Process
+	
+	The DB2 Precompile performs three functions. First, it checks the SQL in
+	the program for errors. Second, it adds working storage areas and source
+	code compatible statements that are used to invoke DB2. One of the working
+	storage areas contains a literal "timestamp" called a consistency token.
+	Finally, all of the SQL statements are extracted from the program source
+	and placed into a member called the DataBase Request Module, or DBRM, which
+	also contains the consistency token.
+
+
+
+STEP 2 -	COMPILE 
+
+	The modified source from the precompile is then compiled. The code is
+	checked for errors, and a compiled version of the code is created.
+
+
+
+STEP 3 -	LINK-EDIT
+
+	The compiled code is link-edited along with statically called source language
+	and DB2 run-time modules to create a Load Module. Imbedded in this
+	module is the same consistency token that was generated in the precompile.
+	If multiple DB2 programs are statically linked together, the resulting load
+	module contains a consistency token for each one.
+
+
+
+STEP 4 -	DB2 BIND
+
+	The bind process reads the DBRM that was created in the precompile and
+	prepares an access path to the data. This access path, along with the
+	consistency token, is stored in the DB2 catalog as a Package. Every Package
+	is bound into a Package List, or Collection. The name of the Collection is
+	specified by the PACKAGE parameter. A Collection is a group of Packages
+	that are included in one or more Plans. The QUALIFIER parameter of the
+	bind is used to direct the SQL to the specific set of DB2 objects (tables,
+	views, aliases or synonyms) qualified by this name.
+
+
+
+
+
+
+
+EXECUTING COBOL-DB2 PROGRAM
+
+	When COBOL-DB2 Program executes, the plan name must be specified. 
+	For online CICS programs, the plan name is specified by Tran ID in
+	the Resource Control Table (RCT). For a batch program, the plan name is
+	specified in the SYSTSIN input DD. The packages for all DB2 programs
+	executed under a Tran ID or batch job step must be included in collection
+	bound into this plan. When the first SQL statement of each program is
+	executed, DB2 searches the collections within the plan using the package name
+	and consistency token from the load module. If an exact match is not
+	found, a -805 SQLCODE is returned.
+               
+
+
+Also visit.....
+
+COBOL DB2 PROGRAMMING - Primary
+SAMPLE COBOL DB2 COMPILE JCL 
+SAMPLE COBOL DB2 RUN JCL  
+
+
+
+
+	    
+
+
+
+                                          
+
+
+
+
+
+
+
+
+
+
+            Home | Donations | Online Tutorials | Books | Entertainment | 
+            Contactme | privacy | sql tutorial  | db2 interview questions 
+
+
+  

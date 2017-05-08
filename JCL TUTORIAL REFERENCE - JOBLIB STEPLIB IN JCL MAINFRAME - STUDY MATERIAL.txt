@@ -1,0 +1,113 @@
+JCL TUTORIAL REFERENCE - JOBLIB STEPLIB IN JCL MAINFRAME - STUDY MATERIALRAMESH 
+      KRISHNA REDDY  
+
+      Online Tutorials  | PREV | TOP | NEXT
+
+
+
+
+DRONA SERIES
+JCL STUDY MATERIAL
+
+
+
+CHAPTER - 3
+
+
+
+          
+
+
+JOBLIB / STEPLIB
+
+
+
+
+
+
+
+
+
+
+
+
+JOBLIB
+
+      It is a DD (Data definition) statement, and it specifies where 
+      the program (which is specified in EXEC statement) exists. 
+      It is applicable to all job steps in that job. It cannot be used 
+      in cataloged procedures.
+
+      Syntax  ->  //JOBLIB  DD  DSN=dataset
+
+      EXAMPLE JCL ->
+                         
+                  //MYJOB   JOB   (E343),'KRISHNA'  
+                  //JOBLIB  DD    DSN=SE.TEST.LOADLIB,DISP=SHR    <---  Attention
+                  //STEP1   EXEC  PGM=COBPROG
+
+                        
+                 Immediately following the JOB statement is the JOBLIB DD 
+                 statement. This is used to specify the location of the 
+                 program that is to be executed.
+
+ 
+
+
+STEPLIB
+
+         It is also like JOBLIB. It is used to tell in which dataset 
+		 program resides, It will be coded in JOB STEP. It is only 
+		 for that step instead of entire JOB. It can be placed any 
+		 where in the job step. STEPLIB can be coded in cataloged 
+		 procedures.
+
+         Syntax  ->      //STEPLIB  DD  DSN=dataset
+
+         Example JCL ->  //MYJOB   JOB   (U456),'KRISHNA'
+                         //STEP1   EXEC  PGM=COBPROG                                                 
+                         //STEPLIB DD    DSN=TEST.MYPROD.LIB,DISP=SHR
+                         //STEP2   EXEC  PGM=COBPROG2
+                         //STEPLIB DD    DSN=TEST.MYPROD.LIB1,DISP=SHR
+
+                         In above example, STEP1 is executing COBPROG which 
+                         is member of TEST.MYPROD.LIB 
+
+                         STEP2 is executing COBPROG2 which is 
+                         member of TEST.MYPROD.LIB1
+
+
+ If both the JOBLIB and STEPLIB statements are coded, then the STEPLIB specification will override JOBLIB specification.  
+        
+           
+
+
+	    
+
+NEXT CHAPTER TOPIC : EXEC statement 
+
+
+
+                                    
+
+
+
+
+
+
+
+
+
+Visit jcl books section in this site for good books
+
+
+
+
+
+
+      Home | Donations | Online Tutorials | Books | Entertainment | Contactme | 
+      privacy | sql tutorial | jcl interview questions | JCL Tutorial | JCL 
+      Tutorial - chapter1 | JCL Tutorial - chapter2 | JCL Tutorial - chapter3 | 
+      JCL Tutorial - chapter4 | JCL Tutorial - chapter5 | JCL Tutorial - 
+      chapter6 | JCL Tutorial - chapter7 | JCL Tutorial - chapter8 | JCL 
+      Tutorial - chapter9 | JCL Tutorial - chapter10 | JCL Tutorial - chapter11 

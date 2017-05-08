@@ -1,0 +1,136 @@
+JCL TUTORIAL - SIMPLE REFERENCE MATERIAL - MAINFRAME STUDY MATERIAL BASICS GUIDERAMESH 
+      KRISHNA REDDY  
+
+      HOME  Mainframegurukul tutorials  
+
+
+
+DRONA SERIES
+JCL TUTORIAL
+
+
+
+
+
+                                                                    JCL QUICK START / REFERENCE
+	   
+
+      CHAPTER-1  INTRODUCTION TO JCL
+
+			  
+      CHAPTER-2  JOB SATATEMENT
+                     - CLASS
+                     - PRTY
+                     - MSGCLASS	
+                     - MSGLEVEL
+                     - TYPRUN
+
+
+      CHAPTER-3  JOBLIB/STEPLIB
+                     - JOBLIB
+                     - STEPLIB
+
+
+      CHAPTER-4  EXEC STATEMENT
+                     - PARM
+                     - ACCT
+                     - ADDRSPC
+                     - DPRTY
+                     - PERFORM
+                     - RD
+
+
+      CHAPTER-5   COMMON PARAMETER IN BOTH JOB AND EXEC STATEMENTS
+                     - REGION
+                     - COND
+                     - TIME
+
+					 
+      CHAPTER-6  DD STATEMENT
+                     - DSN
+                     - Temporary Datasets
+                     - DISP
+                     - UNIT
+                     - VOL
+                     - SPACE
+                     - DCB
+
+
+     CHAPTER-7  SPECIAL DD STATEMENTS
+                     - DUMMY 
+                     - Concatenating Data sets
+                     - Passing data to cobol program  using -  SYSIN DD * 
+                     - SYSOUT
+                     - SYSUDUMP
+                     - SYSADUMP
+
+     CHAPTER-8  INSTREAM and CATALOGED PROCEDURES
+                     -  Introduction
+                     -  Instream Procedure
+                     -  Cataloged procedure
+                     -  Modify statements in a procedure
+                     -  Symbolic parameters
+
+
+     CHAPTER-9  Generation Data Groups (GDG)
+                     - INTRODUCTION
+                     - CREATION OF GDG
+                     - USING GDG
+                     - ALTERING GDG DEFINITION
+                     - DELETING GDG 
+                     - IMPORTANT PRACTICAL QUESTIONS
+
+
+     CHAPTER-10  Control Job Processing (IF THEN ELSE) in JCL
+                     - Introduction
+                     - Example jcl
+
+
+     CHAPTER-11  Restarting and checkpoint in jcl
+                     - Introduction
+                     - Example jcl
+
+
+
+
+
+      
+	
+
+
+   JCL FORUM / HELP BOARD
+
+      LINK-1    JCL HELP BOARD
+
+
+
+
+
+     OTHER JCL TUTORIALS
+
+      TUTORIAL-1    TUTORIAL ON SORT JCL
+      TUTORIAL-2    TUTORIAL ON COMPILE JCL AND RUN JCL
+
+     JCL QUESTIONS
+
+      LINK-1    JCL INTERVIEW QUESTIONS
+
+
+ If you feel this material is useful to you and want to improve this site further.... 
+ Share your knowledge by sending materials/questions which you developed 
+ to srcsinc@yahoo.com 
+  
+
+   Click here to send comments/suggestions to me 
+
+   Click www.mainframegurukul.com/srcsinc For Tutorials on COBOL VSAM IMS XPEDITER JAVA FILE-AID  
+
+
+
+
+                 
+
+
+
+      Home | Online Tutorials | Entertainment | Contactme | privacy | sql 
+      tutorial 

@@ -1,0 +1,170 @@
+JCL TUTORIAL - IBM JCL MAINFRAME JCL INTRODUCTION BASICS EXAPLES - JCL CLASS PRTY MSGCLASS NOTIFYRAMESH 
+      KRISHNA REDDY  
+
+      Online Tutorials  | PREV | TOP | NEXT
+
+
+
+
+DRONA SERIES
+JCL STUDY MATERIAL
+
+
+
+CHAPTER - 2
+
+
+
+          
+
+
+
+
+
+
+
+
+
+
+
+As we discussed in Chapter-1 , Three important input operations are
+
+1. JOB   
+
+2. EXEC  
+
+3. DD
+
+
+Now let us look at JOB statement
+ 
+   
+Syntax of JOB Statement
+
+
+
+
+
+EXPLANATION to keyword parameters
+                 
+CLASS  PRTY  MSGCLASS  MSGLEVEL  TYPRUN  NOTIFY
+
+
+
+1. CLASS - Some jobs can be short running, some jobs may take more time other 
+           may use havy resources. CLASS keyword parameter is used to tell to 
+           OS about the nature of job we are submitting.
+
+   Syntax        ->  CLASS=jobclass  
+
+   Valid values  ->  Any alpha betical character between A - Z  or
+                     numbers between 0 - 9   
+
+   Example JCL   ->  //MYJOB JOB (3345Y),'KRISHNA REDDY',CLASS=K
+
+
+
+2. PRTY  - It is related to CLASS parameter. It assigns priority to jobs which 
+           belong to the same class. Higher number takes precedence over the 
+           job with lower number. A job with priority of 12 will run before a 
+           job with priority 5.
+
+   Syntax        ->  PRTY=priority
+
+   Valid values  ->  Any value between 0 to 15
+
+   Example JCL   ->  //MYJOB JOB (345Y),'KRISHNA REDDY',CLASS=8,PRTY=6 
+
+
+
+3. MSGCLASS - The MSGCLASS parameter determines the output device to which 
+              system messages and JCL messages are written
+
+   Syntax        ->  MSGCLASS=output-class-name
+
+   Valid values  ->  Any alpha betical character between A - Z  or 
+                     number between 0 - 9   
+
+   Example JCL   ->  //MYJOB JOB (456Y),'KRISHNA REDDY',CLASS=7,PRTY=5,MSGCLASS=A
+
+
+                     
+4. MSGLEVEL - is used to tell JCL, which messages to be printed in the device 
+              specified in MSGCLASS parameter
+
+   Syntax        ->  MSGLEVEL=(statements,messages)
+
+   Valid values  ->  Statements may be the number 0,1,2 and messages can be 0 or 1
+
+                     STATEMENT
+                     0  -  Related to job statements only printed
+                     1  -  jcl will be printed 
+                           (which includes all cataloged/symbolic parameters)
+                     2  -  only the input jcl statements being printed
+
+                     MESSAGES           
+                     0  -  Allocation/termination messages will be printed
+                           If job terminates abnormally
+                     1  -  Allocation/termination messages will be printed
+                           regardless of whether the job terminates normally or 
+						   abnormally.
+
+    Example JCL  -> //MYJOB JOB (3456Y),'SR',CLASS=8,MSGCLASS=S,MSGLEVEL=(1,1)
+
+
+
+5. TYPRUN - The TYPRUN parameter is used to specify whether job is to be held 
+            until further notice or for syntax checking
+              
+    Syntax        ->  TYPRUN=HOLD  -  Job held until further notice 
+                                or
+                     TYPRUN=SCAN  -  Check Jcl for syntax checking
+
+                                                                
+
+    Example JCL  ->  //MYJOB JOB (3456Y),'KRISHNA',CLASS=8,PRTY=9,TYPRUN=HOLD
+
+
+6. NOTIFY - The NOTIFY parameter is used to direct the system, where it has to 
+            send the success/failure message after completing the job.
+
+    Syntax        ->  NOTIFY=userid/&SYSUID
+
+
+    EXAMPLE JCL  ->  //MYJOB JOB (3456Y),'KRISHNA REDDY',CLASS=8,NOTIFY=&SYSUID
+
+                     &SYSUID - the userid from which user it has been submited 
+
+                     //MYJOB JOB (34W5),'KRISHNA REDDY',CLASS=8,NOTIFY=ERT54
+
+                     It send the sucess/failture message to ERT54 userid
+
+	    
+
+NEXT CHAPTER TOPIC : JOBLIB / STEPLIB 
+
+
+
+                                    
+
+
+
+
+
+
+
+
+
+Visit jcl books section in this site for good books
+
+
+
+
+
+
+      Home | Donations | Online Tutorials | Books | Entertainment | Contactme | 
+      privacy  | sql tutorial | jcl interview questions | JCL Tutorial | JCL 
+      Tutorial - chapter1 | JCL Tutorial - chapter2 | JCL Tutorial - chapter3 | 
+      JCL Tutorial - chapter4 | JCL Tutorial - chapter5 | JCL Tutorial - 
+      chapter6 | JCL Tutorial - chapter7 | JCL Tutorial - chapter8 | JCL 
+      Tutorial - chapter9 | JCL Tutorial - chapter10 | JCL Tutorial - chapter11 

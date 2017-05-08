@@ -1,0 +1,184 @@
+JCL INTERVIEW QUESTIONS - MAINFRAME
+
+
+
+            ONLINE JCL TUTORIAL 
+
+
+      JCL INTERVIEW QUESTIONS 
+       
+      1. What is primary allocation for a dataset? 
+      The space allocated when the dataset is first created.
+      2. What is the difference between primary and secondary allocations for a 
+      dataset? 
+      Secondary allocation is done when more space is required than what has 
+      already been allocated. 
+      3.How many extents are possible for a sequential file ? For a VSAM file ? 
+      16 extents on a volume for a sequential file and 123 for a VSAM file.
+      4. What does a disposition of (NEW,CATLG,DELETE) mean? 
+      That this is a new dataset and needs to be allocated, to CATLG the dataset 
+      if the step is successful and to delete the dataset if the step abends.
+      5. What does a disposition of (NEW,CATLG,KEEP) mean? 
+      That this is a new dataset and needs to be allocated, to CATLG the dataset 
+      if the step is successful and to KEEP but not CATLG the dataset if the 
+      step abends. Thus if the step abends, the dataset would not be catalogued 
+      and we would need to supply the vol. ser the next time we refer to it.
+      6. How do you access a file that had a disposition of KEEP? 
+      Need to supply volume serial no. VOL=SER=xxxx.
+      7. What does a disposition of (MOD,DELETE,DELETE) mean ? 
+      The MOD will cause the dataset to be created (if it does not exist), and 
+      then the two DELETEs will cause the dataset to be deleted whether the step 
+      abends or not. This disposition is used to clear out a dataset at the 
+      beginning of a job. 
+      8. What is the DD statement for a output file? 
+      Unless allocated earlier, will have the foll parameters: 
+      DISP=(NEW,CATLG,DELETE), UNIT , SPACE & DCB .
+      9. What do you do if you do not want to keep all the space allocated to a 
+      dataset? 
+      Specify the parameter RLSE ( release ) in the SPACE e.g. 
+      SPACE=(CYL,(50,50),RLSE)
+      10. What is DISP=(NEW,PASS,DELETE)? 
+      This is a new file and create it, if the step terminates normally, pass it 
+      to the subsequent steps and if step abends, delete it. This dataset will 
+      not exist beyond the JCL.
+      11. How do you create a temporary dataset? Where will you use them? 
+      Temporary datasets can be created either by not specifying any DSNAME or 
+      by specifying the temporary file indicator as in DSN=&&TEMP. 
+      We use them to carry the output of one step to another step in the same 
+      job. The dataset will not be retained once the job completes.
+      12. How do you restart a proc from a particular step? 
+      In job card, specify RESTART=procstep.stepname
+      where procstep = name of the jcl step that invoked the proc 
+      and stepname = name of the proc step where you want execution to start
+      13. How do you skip a particular step in a proc/JOB? 
+      Can use either condition codes or use the jcl control statement IF (only 
+      in ESA JCL)
+      13a. A PROC has five steps. Step 3 has a condition code. How can you 
+      override/nullify this condition code? 
+      Provide the override on the EXEC stmt in the JCL as follows:
+      //STEP001 EXEC procname,COND.stepname=value
+      All parameters on an EXEC stmt in the proc such as COND, PARM have to be 
+      overridden like this.
+      14. How do you override a specific DDNAME/SYSIN in PROC from a JCL? 
+      //<stepname.dd> DSN=...
+      15. What is NOTCAT 2 ? 
+      This is an MVS message indicating that a duplicate catalog entry exists. 
+      E.g., if you already have a dataset with dsn = �xxxx.yyyy� and u try 
+      to create one with disp new,catlg, you would get this error. the program 
+      open and write would go through and at the end of the step the system 
+      would try to put it in the system catalog. at this point since an entry 
+      already exists the catlg would fail and give this message. you can fix the 
+      problem by deleting/uncataloging the first data set and going to the 
+      volume where the new dataset exists(this info is in the msglog of the job) 
+      and cataloging it.
+      16. What is 'S0C7' abend? 
+      Caused by invalid data in a numeric field.
+      17. What is a S0C4 error ? 
+      Storage violation error - can be due to various reasons. e.g.: READING a 
+      file that is not open, invalid address referenced due to subscript error.
+      18. What are SD37, SB37, SE37 abends? 
+      All indicate dataset out of space. SD37 - no secondary allocation was 
+      specified. SB37 - end of vol. and no further volumes specified. SE37 - 
+      Max. of 16 extents already allocated.
+      19. What is S322 abend ? 
+      Indicates a time out abend. Your program has taken more CPU time than the 
+      default limit for the job class. Could indicate an infinite loop.
+      20. Why do you want to specify the REGION parameter in a JCL step? 
+      To override the REGION defined at the JOB card level.
+      REGION specifies the max region size. REGION=0K or 0M or omitting REGION 
+      means no limit will be applied.
+      21. What does the TIME parameter signify ? What does TIME=1440 mean ? 
+      TIME parameter can be used to overcome S322 abends for programs that 
+      genuinely need more CPU time. TIME=1440 means no CPU time limit is to be 
+      applied to this step.
+      22. What is COND=EVEN ? 
+      Means execute this step even if any of the previous steps, terminated 
+      abnormally.
+      23. What is COND=ONLY ? 
+      Means execute this step only if any of the previous steps, terminated 
+      abnormally.
+      24. How do you check the syntax of a JCL without running it? 
+      TYPERUN=SCAN on the JOB card or use JSCAN.
+      25. What does IEBGENER do? 
+      Used to copy one QSAM file to another. Source dataset should be described 
+      using SYSUT1 ddname. Destination dataset should be decribed using SYSUT2. 
+      IEBGENR can also do some reformatting of data by supplying control cards 
+      via SYSIN.
+      26. How do you send the output of a COBOL program to a member of a PDS? 
+      Code the DSN as pds(member) with a DISP of SHR. The disp applies to the 
+      pds and not to a specific member.
+      27. I have multiple jobs ( JCLs with several JOB cards ) in a member. What 
+      happens if I submit it? 
+      Multiple jobs are submitted (as many jobs as the number of JOB cards). 
+      28. I have a COBOL program that ACCEPTs some input data. How do you code 
+      the JCL statment for this? ( How do you code instream data in a JCL? ) 
+      //SYSIN DD*
+      input data
+      input data
+      /*
+      29. Can you code instream data in a PROC ? 
+      No.
+      30. How do you overcome this limitation ? 
+      One way is to code SYSIN DD DUMMY in the PROC, and then override this from 
+      the JCL with instream data.
+      31. How do you run a COBOL batch program from a JCL? How do you run a 
+      COBOL/DB2 program? 
+      To run a non DB2 program,
+      //STEP001 EXEC PGM=MYPROG
+      To run a DB2 program,
+      //STEP001 EXEC PGM=IKJEFT01
+      //SYSTSIN DD *
+      DSN SYSTEM(....)
+      RUN PROGRAM(MYPROG)
+      PLAN(.....) LIB(....) PARMS(...)
+      /*
+      32. What is STEPLIB, JOBLIB? What is it used for? 
+      Specifies that the private library (or libraries) specified should be 
+      searched before the default system libraries in order to locate a program 
+      to be executed.
+      STEPLIB applies only to the particular step, JOBLIB to all steps in the 
+      job.
+      33. What is order of searching of the libraries in a JCL? 
+      First any private libraries as specified in the STEPLIB or JOBLIB, then 
+      the system libraries such as SYS1.LINKLIB. The system libraries are 
+      specified in the linklist. 
+      34. What happens if both JOBLIB & STEPLIB is specified ? 
+      JOBLIB is ignored.
+      35. When you specify mutiple datasets in a JOBLIB or STEPLIB, what factor 
+      determines the order? 
+      The library with the largest block size should be the first one.
+      36. How to change default proclib ? 
+      //ABCD JCLLIB ORDER=(ME.MYPROCLIB,SYS1.PROCLIB)
+      37. The disp in the JCL is MOD and the program opens the file in OUTPUT 
+      mode. What happens ? 
+      The disp in the JCL is SHR and the pgm opens the file in EXTEND mode. What 
+      happens ? 
+      Records will be written to end of file (append) when a WRITE is done in 
+      both cases.
+      38. What are the valid DSORG values ? 
+      PS - QSAM, PO - Partitioned, IS - ISAM
+       
+      39. What are the differences between JES2 & JES3 ? 
+      JES3 allocates datasets for all the steps before the job is scheduled. In 
+      JES2, allocation of datasets required by a step are done only just before 
+      the step executes. 
+      ????? Can anyone add more
+
+
+
+
+
+            ONLINE JCL TUTORIAL 
+      HOME
+      JCL INTERVIEW QUESTIONS  JCL JCL INTERVIEW QUESTOINS  JCL INTERVIEW 
+      QUESTOINS
+
+               
+
+DB2 Interview Questions  |  COBOL Interview Questions  |  JCL interview 
+questions  |  JCL interview questions  |  vsam Interview Questions  |  cics 
+Interview Questions  
+|
+DB2 Interview Questions  |  COBOL Interview Questions  |  JCL interview 
+questions  |  JCL interview questions  |  vsam Interview Questions  |  cics 
+Interview Questions 

@@ -1,3 +1,4 @@
+program structure
 dbrm
 cmpilation
 inspect
@@ -14,4 +15,8 @@ comp-3
 comp-5
 soc abends
 cursor
+copy replace
+test before/aftr
+
+
 

@@ -17,6 +17,14 @@ soc abends
 cursor
 copy replace
 test before/aftr
+function current-date
+file status 92/39
+test before
+internal sort
+string
+unstring
+evaluate
+
 
 
 

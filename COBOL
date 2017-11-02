@@ -28,7 +28,8 @@ acess modes
 organization
 occurs depending
 sync
-
+bind parameters
+isolaion levels
 
 
 

@@ -8,4 +8,21 @@ union
 distinct
 
 
-w3schools
+cast
+  select cast(name as int) as name
+coalesce
+  COALESCE(COLNAME,VALUE)
+count
+  
+substr
+char
+days/date
+digits
+max
+
+
+
+nth highest
+
+
+

@@ -6,6 +6,10 @@ sqcodes
 indexing
 union
 distinct
+runstats
+reorg
+index cardinality
+clustered index
 
 
 cast

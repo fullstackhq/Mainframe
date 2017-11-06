@@ -30,6 +30,12 @@ occurs depending
 sync
 bind parameters
 isolaion levels
+goback vs stoprun vs exit
+perform statement
+copy vs include
+dynam
+ssrange
+plan
 
 
 

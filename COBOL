@@ -36,6 +36,12 @@ copy vs include
 dynam
 ssrange
 plan
+subscript vs index
+move corr
+merge
+with no advancing
+ref mod
+perform varying after
 
 
 

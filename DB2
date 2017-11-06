@@ -10,6 +10,11 @@ runstats
 reorg
 index cardinality
 clustered index
+explain
+refrential integrity
+cursor sqlcodes
+cursor with hold
+update cursor
 
 
 cast
@@ -27,6 +32,8 @@ max
 
 
 nth highest
+highest of each group
+
 
 
 

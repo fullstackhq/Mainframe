@@ -1,0 +1,97 @@
+PSEUDO CONVERSION
+PCT
+reentrancy
+quasi reentrant
+multitasking
+multithreading
+
+
+
+
+
+erase
+send
+receive
+return
+send control
+handle
+dynamic calling
+commarea
+
+PGMIDERR
+notauth
+
+prot
+unprot
+ic
+askip
+tioapfx
+
+
+
+Terminal
+        TCP     Check all terminal for input
+                says SCP to create TIOA
+                gives control to KCP
+        
+        KCP     Validate tran id and security
+                says SCP to create task control area
+                assigns priority - Terminal(TCT) Operator(SNT) Transaction(PCT)
+                Add/control queue of waiting programs
+                Gives control to PCP
+        
+        PCP     Locates program and loads it
+                Transfer control to App program
+                
+        APP     Req TCP to place message in WS area
+                Req FCP to retrieve records from files
+                
+        FCP     Req file work area fromm SCP
+                Says KCP that task can wait until I/O is complete
+                
+        KCP     dispatches next task in queue
+                re-dispatch old task once I/O is complete
+                Transfer cntrol to FCP
+                
+        FCP     Returns control to App program
+        
+        APP     Code runs
+                Req TCP  to send I/O message
+                Returns control to PCP
+                
+        PCP     Returns control to KCP req to end the task
+        
+        KCP     Instructs SCP to free all storage except TIOA
+        
+        TCP     Sends output to terminal
+                Req SCP to release TIOA
+        
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

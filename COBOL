@@ -1,15 +1,18 @@
 program structure
 dbrm
+package
+collection
 cmpilation
 inspect
 redefines
 renames
-suppress
+  suppress
 search
 search all
 static
 dynamic
 comp
+comp-1
 comp-2
 comp-3
 comp-5

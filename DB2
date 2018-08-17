@@ -32,7 +32,23 @@ max
 
 
 nth highest
+Select sal
+From emp As t
+Where &n =  (
+            Select Count(Z.sal)
+            From    (
+                    Select Distinct sal
+                    From emp
+                    ) As Z
+            Where t.sal <= Z.sal
+            )
 highest of each group
+SELECT label, MAX(eventdate) AS maxeventdate FROM (
+  SELECT parentid, eventdate FROM TABLE1
+  UNION ALL 
+  SELECT parentid, eventdate FROM TABLE2)
+JOIN PARENT ON (id = parentid)
+GROUP BY label
 
 
 

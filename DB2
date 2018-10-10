@@ -16,6 +16,10 @@ cursor sqlcodes
 cursor with hold
 update cursor
 null indicator
+check pending
+copy pending
+enforce no
+replace on
 
 cast
   select cast(name as int) as name
